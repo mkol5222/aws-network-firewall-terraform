@@ -120,15 +120,17 @@ resource "aws_route_table" "inspection_vpc_public_subnet_route_table" {
     gateway_id = aws_internet_gateway.inspection_vpc_igw.id
   
   }
-  # back to spokes via TGW
-   route {
-    cidr_block         = var.super_cidr_block
-    transit_gateway_id = aws_ec2_transit_gateway.tgw.id
-  }
+  # # back to spokes via TGW
+  #  route {
+  #   cidr_block         = var.super_cidr_block
+  #   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  # }
+  # back to spokes via CHECKPOINT
   # route {
   #   cidr_block = var.super_cidr_block
   #   # https://github.com/hashicorp/terraform-provider-aws/issues/16759
-  #   vpc_endpoint_id = element([for ss in tolist(aws_networkfirewall_firewall.inspection_vpc_anfw.firewall_status[0].sync_states) : ss.attachment[0].endpoint_id if ss.attachment[0].subnet_id == aws_subnet.inspection_vpc_firewall_subnet[count.index].id], 0)
+  #   #vpc_endpoint_id = element([for ss in tolist(aws_networkfirewall_firewall.inspection_vpc_anfw.firewall_status[0].sync_states) : ss.attachment[0].endpoint_id if ss.attachment[0].subnet_id == aws_subnet.inspection_vpc_firewall_subnet[count.index].id], 0)
+  #   vpc_endpoint_id = <CP gwlbe>
   # }
   tags = {
     Name = "inspection-vpc/${data.aws_availability_zones.available.names[count.index]}/public-subnet-route-table"
