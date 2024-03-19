@@ -1,7 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+locals {
+  deploy_aws_network_firewall = false
+}
+
 resource "aws_networkfirewall_firewall_policy" "anfw_policy" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   name = "firewall-policy"
   firewall_policy {
     stateless_default_actions          = ["aws:forward_to_sfe"]
@@ -23,6 +28,7 @@ resource "aws_networkfirewall_firewall_policy" "anfw_policy" {
 }
 
 resource "aws_networkfirewall_rule_group" "drop_icmp" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   capacity = 1
   name     = "drop-icmp"
   type     = "STATELESS"
@@ -50,6 +56,7 @@ resource "aws_networkfirewall_rule_group" "drop_icmp" {
 }
 
 resource "aws_networkfirewall_rule_group" "drop_non_http_between_vpcs" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   capacity = 100
   name     = "drop-non-http-between-vpcs"
   type     = "STATEFUL"
@@ -72,6 +79,7 @@ resource "aws_networkfirewall_rule_group" "drop_non_http_between_vpcs" {
 }
 
 resource "aws_networkfirewall_rule_group" "block_public_dns_resolvers" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   capacity = 1
   name     = "block-public-dns"
   type     = "STATEFUL"
@@ -97,6 +105,7 @@ resource "aws_networkfirewall_rule_group" "block_public_dns_resolvers" {
 }
 
 resource "aws_networkfirewall_rule_group" "block_domains" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   capacity = 100
   name     = "block-domains"
   type     = "STATEFUL"
@@ -122,6 +131,7 @@ resource "aws_networkfirewall_rule_group" "block_domains" {
 
 
 resource "aws_networkfirewall_firewall" "inspection_vpc_anfw" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   name                = "NetworkFirewall"
   firewall_policy_arn = aws_networkfirewall_firewall_policy.anfw_policy.arn
   vpc_id              = aws_vpc.inspection_vpc.id
@@ -137,6 +147,7 @@ resource "aws_networkfirewall_firewall" "inspection_vpc_anfw" {
 }
 
 resource "aws_cloudwatch_log_group" "anfw_alert_log_group" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   name = "/aws/network-firewall/alert"
 }
 
@@ -147,11 +158,13 @@ resource "random_string" "bucket_random_id" {
 }
 
 resource "aws_s3_bucket" "anfw_flow_bucket" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   bucket        = "network-firewall-flow-bucket-${random_string.bucket_random_id.id}"
   force_destroy = true
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   bucket = aws_s3_bucket.anfw_flow_bucket.id
   rule {
     apply_server_side_encryption_by_default {
@@ -161,6 +174,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "anfw_flow_bucket_ownership_control" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   bucket = aws_s3_bucket.anfw_flow_bucket.id
   rule {
     object_ownership = "BucketOwnerEnforced"
@@ -177,6 +191,7 @@ resource "aws_s3_bucket_ownership_controls" "anfw_flow_bucket_ownership_control"
 # }
 
 resource "aws_networkfirewall_logging_configuration" "anfw_alert_logging_configuration" {
+  count = local.deploy_aws_network_firewall ? 1 : 0
   firewall_arn = aws_networkfirewall_firewall.inspection_vpc_anfw.arn
   logging_configuration {
     log_destination_config {
