@@ -167,14 +167,14 @@ resource "aws_s3_bucket_ownership_controls" "anfw_flow_bucket_ownership_control"
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "anfw_flow_bucket_public_access_block" {
-  bucket = aws_s3_bucket.anfw_flow_bucket.id
+# resource "aws_s3_bucket_public_access_block" "anfw_flow_bucket_public_access_block" {
+#   bucket = aws_s3_bucket.anfw_flow_bucket.id
 
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
+#   block_public_acls       = true
+#   block_public_policy     = true
+#   ignore_public_acls      = true
+#   restrict_public_buckets = true
+# }
 
 resource "aws_networkfirewall_logging_configuration" "anfw_alert_logging_configuration" {
   firewall_arn = aws_networkfirewall_firewall.inspection_vpc_anfw.arn
