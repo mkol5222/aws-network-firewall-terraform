@@ -38,7 +38,7 @@ gwlbe_subnet_4_cidr = "10.255.74.0/24"
 
   
 // --- General Settings ---
-key_name = "publickey"
+key_name = "azureshell"
 enable_volume_encryption = true
 volume_size = 100
 enable_instance_connect = false

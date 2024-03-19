@@ -84,11 +84,11 @@ resource "aws_route_table" "inspection_vpc_tgw_subnet_route_table" {
   }
 }
 
-resource "aws_route_table_association" "inspection_vpc_tgw_subnet_route_table_association" {
-  count          = length(data.aws_availability_zones.available.names)
-  route_table_id = aws_route_table.inspection_vpc_tgw_subnet_route_table[count.index].id
-  subnet_id      = aws_subnet.inspection_vpc_tgw_subnet[count.index].id
-}
+# resource "aws_route_table_association" "inspection_vpc_tgw_subnet_route_table_association" {
+#   count          = length(data.aws_availability_zones.available.names)
+#   route_table_id = aws_route_table.inspection_vpc_tgw_subnet_route_table[count.index].id
+#   subnet_id      = aws_subnet.inspection_vpc_tgw_subnet[count.index].id
+# }
 
 resource "aws_route_table" "inspection_vpc_firewall_subnet_route_table" {
   count  = length(data.aws_availability_zones.available.names)
