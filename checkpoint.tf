@@ -15,15 +15,15 @@ module "gwlb" {
 //PLEASE refer to README.md for accepted values FOR THE VARIABLES BELOW
 
 // --- VPC Network Configuration ---
-vpc_id = "vpc-0762100991406be4b"
-internet_gateway_id ="igw-0ca9d90ea9eb448e9"
+vpc_id = "vpc-0e1e127a71e05ef1c"
+internet_gateway_id ="igw-00ac3ad04390d9240"
 availability_zones = ["eu-west-1a","eu-west-1b","eu-west-1c"]
 number_of_AZs = 3
-gateways_subnets= ["subnet-123456", "subnet-234567"]
+gateways_subnets= ["subnet-0a7449574e9c0aecf", "subnet-0ce0ecaf60e6e9576", "subnet-05f8b9734adf94c67"]
 
-transit_gateway_attachment_subnet_1_id="subnet-01829b00df174d60c"
-transit_gateway_attachment_subnet_2_id="subnet-053cb1150306026c9"
-transit_gateway_attachment_subnet_3_id="subnet-0540ef21189836a34"
+transit_gateway_attachment_subnet_1_id="subnet-0b30de6518af2c554"
+transit_gateway_attachment_subnet_2_id="subnet-046044550dc52e9b7"
+transit_gateway_attachment_subnet_3_id="subnet-02efedaff9b7a1b2c"
 transit_gateway_attachment_subnet_4_id="subnet-6789" // n/a
 
 nat_gw_subnet_1_cidr ="10.255.61.0/24"
@@ -51,7 +51,7 @@ admin_shell = "/bin/bash"
 // --- Gateway Load Balancer Configuration ---
 gateway_load_balancer_name = "gwlb1"
 target_group_name = "tg1"
-connection_acceptance_required = "false"
+#connection_acceptance_required = "false"
 enable_cross_zone_load_balancing = "true"
   
 // --- Check Point CloudGuard IaaS Security Gateways Auto Scaling Group Configuration ---
@@ -76,10 +76,10 @@ management_password_hash = "$6$ycLB31kh2cbEDSnk$b1ZMkobMX/RUXmDWKDWnr2fPpWaGyMAZ
 management_maintenance_mode_password_hash = "$6$ycLB31kh2cbEDSnk$b1ZMkobMX/RUXmDWKDWnr2fPpWaGyMAZHyjg0tFrggUA6ehd8YglKyj3H0hyYCNQrgzXn89TohVj1qW2l3LoI0" # For R81.10 and below the management_password_hash is used also as maintenance-mode password.
 gateways_policy = "Standard"
 gateway_management = "Locally managed"
-admin_cidr = ""
-gateways_addresses = ""
+admin_cidr = "0.0.0.0/0"
+gateways_addresses = "10.0.0.0/8"
   
 // --- Other parameters ---
-VolumeType = "gp3"
+# VolumeType = "gp3"
   
 }
