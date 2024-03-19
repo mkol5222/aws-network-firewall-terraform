@@ -10,7 +10,7 @@
 
 module "gwlb" {
 
-  source = "github.com/CheckPointSW/CloudGuardIaaS/terraform/aws/tgw-gwlb"
+  source = "github.com/mkol5222/CloudGuardIaaS/terraform/aws/tgw-gwlb"
 
 //PLEASE refer to README.md for accepted values FOR THE VARIABLES BELOW
 
